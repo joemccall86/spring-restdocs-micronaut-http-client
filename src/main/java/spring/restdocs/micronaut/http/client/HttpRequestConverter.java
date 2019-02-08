@@ -1,19 +1,15 @@
 package spring.restdocs.micronaut.http.client;
 
-import io.micronaut.http.HttpParameters;
 import io.micronaut.http.HttpRequest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.restdocs.operation.OperationRequest;
 import org.springframework.restdocs.operation.OperationRequestFactory;
-import org.springframework.restdocs.operation.Parameters;
 import org.springframework.restdocs.operation.RequestConverter;
 
 import java.util.Collections;
 
-public class HttpRequestConverter implements RequestConverter<HttpRequest<?>> {
+public class HttpRequestConverter<B> implements RequestConverter<HttpRequest<B>> {
     @Override
-    public OperationRequest convert(HttpRequest request) {
+    public OperationRequest convert(HttpRequest<B> request) {
         return new OperationRequestFactory().create(
                 request.getUri(),
                 SpringMicronautConverters.convertMethod(request.getMethod()),
