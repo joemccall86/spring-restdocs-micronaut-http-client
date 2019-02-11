@@ -5,11 +5,10 @@ import org.springframework.restdocs.operation.preprocess.OperationRequestPreproc
 import org.springframework.restdocs.operation.preprocess.OperationResponsePreprocessor;
 import org.springframework.restdocs.snippet.Snippet;
 
-// TODO Does not compile
 public abstract class HttpClientDocumentation {
 
-    private static final HttpRequestConverter<Object> REQUEST_CONVERTER = new HttpRequestConverter<>();
-    private static final HttpResponseConverter<Object> RESPONSE_CONVERTER = new HttpResponseConverter<>();
+    private static final HttpRequestConverter REQUEST_CONVERTER = new HttpRequestConverter<>();
+    private static final HttpResponseConverter RESPONSE_CONVERTER = new HttpResponseConverter<>();
 
 
     private HttpClientDocumentation() {
@@ -17,7 +16,7 @@ public abstract class HttpClientDocumentation {
 
     public static HttpClientDocumentationFilter document(String identifier, Snippet... snippets) {
         return new HttpClientDocumentationFilter(
-                new RestDocumentationGenerator<>(
+                new RestDocumentationGenerator(
                         identifier,
                         REQUEST_CONVERTER, RESPONSE_CONVERTER,
                         snippets)
@@ -28,7 +27,7 @@ public abstract class HttpClientDocumentation {
                                                         OperationRequestPreprocessor requestPreprocessor,
                                                         Snippet... snippets) {
         return new HttpClientDocumentationFilter(
-                new RestDocumentationGenerator<>(
+                new RestDocumentationGenerator(
                         identifier,
                         REQUEST_CONVERTER, RESPONSE_CONVERTER,
                         requestPreprocessor,
@@ -45,7 +44,7 @@ public abstract class HttpClientDocumentation {
     public static HttpClientDocumentationFilter document(String identifier,
                                                         OperationRequestPreprocessor requestPreprocessor,
                                                         OperationResponsePreprocessor responsePreprocessor, Snippet... snippets) {
-        return new HttpClientDocumentationFilter(new RestDocumentationGenerator<>(identifier,
+        return new HttpClientDocumentationFilter(new RestDocumentationGenerator(identifier,
                 REQUEST_CONVERTER, RESPONSE_CONVERTER, requestPreprocessor,
                 responsePreprocessor, snippets));
     }

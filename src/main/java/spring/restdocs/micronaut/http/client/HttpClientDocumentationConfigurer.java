@@ -2,16 +2,22 @@ package spring.restdocs.micronaut.http.client;
 
 import org.springframework.restdocs.config.RestDocumentationConfigurer;
 
-// TODO figure out the new SRD way to implement a configurer
-public class HttpClientDocumentationConfigurer<B> extends
-        RestDocumentationConfigurer<HttpClientSnippetConfigurer, HttpClientDocumentationConfigurer<B>, B> {
+public class HttpClientDocumentationConfigurer extends
+        RestDocumentationConfigurer<
+                HttpClientSnippetConfigurer,
+                HttpClientOperationPreprocessorsConfigurer,
+                HttpClientDocumentationConfigurer> {
+
+    private final HttpClientSnippetConfigurer httpClientSnippetConfigurer = new HttpClientSnippetConfigurer(this);
+    private final HttpClientOperationPreprocessorsConfigurer httpClientOperationPreprocessorsConfigurer = new HttpClientOperationPreprocessorsConfigurer(this);
+
     @Override
     public HttpClientSnippetConfigurer snippets() {
-        return null;
+        return httpClientSnippetConfigurer;
     }
 
     @Override
-    public HttpClientDocumentationConfigurer operationPreprocessors() {
-        return null;
+    public HttpClientOperationPreprocessorsConfigurer operationPreprocessors() {
+        return httpClientOperationPreprocessorsConfigurer;
     }
 }
