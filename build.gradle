@@ -1,6 +1,10 @@
+group = 'io.github.joemcall86'
 version = 0.1
 
 apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 repositories {
     mavenLocal()
@@ -10,4 +14,24 @@ repositories {
 dependencies {
     implementation 'org.springframework.restdocs:spring-restdocs-core:2.0.3.RELEASE'
     implementation 'io.micronaut:micronaut-http:1.0.4'
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourceJar {
+                classifier 'sources'
+            }
+
+            groupId project.group
+            artifactId project.name
+            version project.version
+        }
+    }
 }
