@@ -1,5 +1,6 @@
 package spring.restdocs.micronaut.http.client;
 
+import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.generate.RestDocumentationGenerator;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.restdocs.operation.preprocess.OperationResponsePreprocessor;
@@ -8,7 +9,7 @@ import org.springframework.restdocs.snippet.Snippet;
 public abstract class HttpClientDocumentation {
 
     private static final HttpRequestConverter REQUEST_CONVERTER = new HttpRequestConverter<>();
-    private static final HttpResponseConverter RESPONSE_CONVERTER = new HttpResponseConverter<>();
+    private static final HttpResponseConverter RESPONSE_CONVERTER = new HttpResponseConverter();
 
 
     private HttpClientDocumentation() {
@@ -47,5 +48,9 @@ public abstract class HttpClientDocumentation {
         return new HttpClientDocumentationFilter(new RestDocumentationGenerator(identifier,
                 REQUEST_CONVERTER, RESPONSE_CONVERTER, requestPreprocessor,
                 responsePreprocessor, snippets));
+    }
+
+    public static HttpClientDocumentationConfigurer documentationConfiguration(RestDocumentationContextProvider contextProvider) {
+        return new HttpClientDocumentationConfigurer(contextProvider);
     }
 }

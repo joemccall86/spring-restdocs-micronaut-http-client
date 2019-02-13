@@ -34,9 +34,12 @@ public class HttpClientDocumentationFilter implements HttpClientFilter {
 
         configuration.put(RestDocumentationContext.class.getName(), context);
 
-        return Publishers.then(
+        return Publishers.map(
                 chain.proceed(request),
-                (response) -> delegate.handle(request, response, configuration)
+                (response) -> {
+                    delegate.handle(request, response, configuration);
+                    return response;
+                }
         );
     }
 }
