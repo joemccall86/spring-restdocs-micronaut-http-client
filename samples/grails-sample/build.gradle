@@ -10,6 +10,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'org.asciidoctor.convert' version '1.5.3'
+}
+
 version "0.1"
 group "grails.sample"
 
@@ -22,6 +26,13 @@ apply plugin:"org.grails.plugins.views-json"
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
+}
+
+dependencyManagement {
+    dependencies {
+        dependency 'org.springframework.restdocs:spring-restdocs-core:2.0.3.RELEASE'
+        dependency 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.3.RELEASE'
+    }
 }
 
 dependencies {
@@ -59,8 +70,21 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
 
-    testCompile 'io.micronaut:micronaut-http-client:2.0.4'
+    testCompile 'io.micronaut:micronaut-http-client:1.0.4'
     testCompile 'io.github.joemccall86:spring-restdocs-micronaut-http-client:0.1-SNAPSHOT'
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+integrationTest {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    dependsOn integrationTest
+    inputs.dir snippetsDir
 }
 
 bootRun {
