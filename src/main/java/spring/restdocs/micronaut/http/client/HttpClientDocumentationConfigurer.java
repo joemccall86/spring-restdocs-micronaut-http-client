@@ -46,6 +46,10 @@ public class HttpClientDocumentationConfigurer extends
         // TODO discover a way to pass the context and configuration to the execution chain so the HttpClientDocumentationFilter can make use of it
         // A naive approach would be to place it in a ContextHolder singleton, but that's not thread-safe.
 
+        // Since it's a mutable request, let's see if we can just add an attribute for now
+        request.setAttribute("srdContext", context);
+        request.setAttribute("srdConfig", configuration);
+
         return chain.proceed(request);
     }
 }

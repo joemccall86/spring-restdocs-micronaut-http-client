@@ -7,6 +7,7 @@ import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.filter.ClientFilterChain;
 import io.micronaut.http.filter.HttpClientFilter;
 import org.reactivestreams.Publisher;
+import org.springframework.restdocs.RestDocumentationContext;
 import org.springframework.restdocs.generate.RestDocumentationGenerator;
 
 import java.util.Collections;
@@ -27,8 +28,11 @@ public class HttpClientDocumentationFilter implements HttpClientFilter {
         // I may have to do this here as well.
 
 
-        // TODO grab the configuration map from wherever it is stored by the HttpClientDocumentationConfigurer.
-        Map<String, Object> configuration = Collections.emptyMap();
+        // grab the configuration map from wherever it is stored by the HttpClientDocumentationConfigurer.
+        Map<String, Object> configuration = (Map<String, Object>) request.getAttribute("srdConfig").get();
+        RestDocumentationContext context = (RestDocumentationContext) request.getAttribute("srdContext").get();
+
+        configuration.put(RestDocumentationContext.class.getName(), context);
 
         return Publishers.then(
                 chain.proceed(request),
